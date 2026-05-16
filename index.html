@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ministério de Mídia - Guia Interativo</title>
+    <title>Ministério de Mídia</title>
     <style>
         * {
             margin: 0;
@@ -11,497 +11,696 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #ec4899;
+            --primary-dark: #db2777;
+            --primary-light: #f472b6;
+            --secondary: #8b5cf6;
+            --secondary-light: #a78bfa;
+            --accent: #06b6d4;
+            --accent-light: #67e8f9;
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --surface-alt: #f5f5f5;
+            --border: #e5e7eb;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --blue-accent: #3b82f6;
+            --blue-light: #dbeafe;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1f4e79 0%, #4f81bd 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-
+        /* HEADER */
         header {
-            background: linear-gradient(135deg, #1f4e79 0%, #4f81bd 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--surface);
+            border-bottom: 1px solid var(--blue-light);
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        header h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
-        }
-
-        header p {
-            font-size: 18px;
-            opacity: 0.9;
-        }
-
-        .tabs {
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
-            background: #f5f5f5;
-            border-bottom: 2px solid #ddd;
-            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding: 0.5rem;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
         }
 
         .tab-btn {
-            flex: 1;
-            min-width: 120px;
-            padding: 15px;
-            border: none;
-            background: #f5f5f5;
+            flex-shrink: 0;
+            padding: 0.75rem 1.25rem;
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            border-radius: 0.75rem;
             cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: #666;
-            transition: all 0.3s;
-        }
-
-        .tab-btn.active {
-            background: white;
-            color: #1f4e79;
-            border-bottom: 3px solid #4f81bd;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
         .tab-btn:hover {
-            background: #f0f0f0;
+            background: white;
+            color: var(--text);
+            border-color: var(--blue-accent);
         }
 
-        .content {
-            padding: 40px;
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.2);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* SLIDES */
+        .slide {
             display: none;
-            min-height: 500px;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
-        .content.active {
+        .slide.active {
             display: block;
         }
 
-        .equipamentos-grid {
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* GRID EQUIPAMENTOS */
+        .equip-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem 0;
+        }
+
+        @media (min-width: 768px) {
+            .equip-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1.5rem;
+            }
         }
 
         .equip-card {
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            background: var(--surface);
+            border: 1.5px solid var(--blue-light);
+            border-radius: 1rem;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
         }
 
-        .equip-card:hover {
-            border-color: #4f81bd;
-            box-shadow: 0 4px 12px rgba(79, 129, 189, 0.3);
-            transform: translateY(-2px);
+        .equip-card:active {
+            transform: scale(0.98);
+            border-color: var(--blue-accent);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
         }
 
         .equip-img {
             width: 100%;
-            height: 200px;
+            height: 120px;
             object-fit: cover;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         }
 
         .equip-info {
-            padding: 15px;
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .equip-info h3 {
-            color: #1f4e79;
-            margin-bottom: 5px;
-            font-size: 16px;
+        .equip-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            color: var(--text);
         }
 
-        .equip-info p {
-            color: #666;
-            font-size: 13px;
+        .equip-qty {
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
 
+        /* PASSO */
         .passo {
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f9f9f9;
-            border-left: 4px solid #4f81bd;
-            border-radius: 4px;
+            background: var(--surface);
+            border: 1.5px solid var(--blue-light);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            animation: slideUp 0.3s ease-out;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .passo h3 {
-            color: #1f4e79;
-            margin-bottom: 15px;
-            font-size: 18px;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .passo-texto {
-            color: #555;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
             line-height: 1.8;
-            margin-bottom: 15px;
+        }
+
+        .passo-texto p {
+            margin-bottom: 0.75rem;
         }
 
         .equip-link {
-            color: #4f81bd;
+            color: var(--primary);
             cursor: pointer;
-            text-decoration: underline;
-            font-weight: 500;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
         }
 
-        .equip-link:hover {
-            color: #1f4e79;
+        .equip-link:active {
+            opacity: 0.8;
+            border-bottom-color: var(--blue-accent);
         }
 
-        /* MODAL POPUP */
+        .box-info {
+            background: var(--blue-light);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .box-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            color: var(--blue-accent);
+            font-weight: 600;
+        }
+
+        .box-info p {
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        /* MODAL */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            padding: 1rem;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .modal.show {
+        .modal.active {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-end;
+            animation: slideUpFull 0.3s ease-out;
+        }
+
+        @keyframes slideUpFull {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
         }
 
         .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 800px;
-            width: 95%;
-            max-height: 90vh;
-            overflow-y: auto;
+            background: var(--surface);
+            border-radius: 1.5rem 1.5rem 0 0;
+            border-top: 1.5px solid var(--blue-light);
+            width: 100%;
+            padding: 1.5rem;
+            animation: slideUp 0.3s ease-out;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #4f81bd;
+            margin-bottom: 1.5rem;
         }
 
         .modal-header h2 {
-            color: #1f4e79;
-            margin: 0;
-            font-size: 24px;
+            font-size: 1.5rem;
+            color: var(--text);
         }
 
         .close-btn {
-            font-size: 28px;
-            font-weight: bold;
-            color: #999;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 1.5rem;
             cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
         }
 
-        .close-btn:hover {
-            color: #1f4e79;
+        .close-btn:active {
+            background: var(--blue-light);
+            border-color: var(--blue-accent);
+            transform: scale(0.95);
         }
 
         .modal-img {
             width: 100%;
-            max-height: 500px;
-            object-fit: contain;
-            border-radius: 8px;
-            background: #f5f5f5;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 1rem;
+            border: 1.5px solid var(--blue-light);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         }
 
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 30px;
+        /* SUCESSO */
+        .success {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            border-radius: 1.5rem;
+            border: 1.5px solid rgba(6, 182, 212, 0.2);
+            padding: 2rem;
             text-align: center;
-            font-weight: 600;
+            margin-top: 2rem;
+            animation: scaleIn 0.4s ease-out;
+            color: white;
         }
 
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .success h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .success p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        /* FOOTER */
         footer {
-            background: #f5f5f5;
-            padding: 20px;
+            background: var(--surface);
+            border-top: 1px solid var(--blue-light);
+            padding: 2rem 1rem;
             text-align: center;
-            color: #999;
-            font-size: 13px;
-            border-top: 1px solid #ddd;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 3rem;
+        }
+
+        /* SPACING */
+        section {
+            padding: 1.5rem 0;
+        }
+
+        @media (min-width: 768px) {
+            section {
+                padding: 2rem 0;
+            }
+
+            .equip-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+
+            .modal.active {
+                align-items: center;
+            }
+
+            .modal-content {
+                border-radius: 1.5rem;
+                border-top: 1.5px solid var(--blue-light);
+                max-width: 600px;
+                margin: auto;
+            }
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--surface-alt);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--blue-accent);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎵 MINISTÉRIO DE MÍDIA</h1>
-            <p>Guia Interativo de Montagem</p>
-        </header>
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="abrirAba('slide1')">📋 Equipamentos</button>
-            <button class="tab-btn" onclick="abrirAba('slide2')">Passo 1: Caixas</button>
-            <button class="tab-btn" onclick="abrirAba('slide3')">Passo 2: Microfones</button>
-            <button class="tab-btn" onclick="abrirAba('slide4')">Passo 3: Direct Box Pt1</button>
-            <button class="tab-btn" onclick="abrirAba('slide5')">Passo 4: Direct Box Pt2</button>
-            <button class="tab-btn" onclick="abrirAba('slide6')">✅ Concluído</button>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="logo">🎵 Mídia</div>
+            <div class="tab-container">
+                <button class="tab-btn active" onclick="mudarSlide(0)">Equipamentos</button>
+                <button class="tab-btn" onclick="mudarSlide(1)">Passo 1</button>
+                <button class="tab-btn" onclick="mudarSlide(2)">Passo 2</button>
+                <button class="tab-btn" onclick="mudarSlide(3)">Passo 3</button>
+                <button class="tab-btn" onclick="mudarSlide(4)">Passo 4</button>
+                <button class="tab-btn" onclick="mudarSlide(5)">Fim</button>
+            </div>
         </div>
+    </header>
 
+    <!-- CONTEÚDO -->
+    <main class="container">
         <!-- SLIDE 1: EQUIPAMENTOS -->
-        <div id="slide1" class="content active">
-            <h2>EQUIPAMENTOS DO MINISTÉRIO</h2>
-            <p style="color: #666; margin-bottom: 20px; font-size: 14px;">Clique em qualquer equipamento para ver a foto em grande</p>
+        <section class="slide active" id="slide-0">
+            <div style="padding: 1rem 0;">
+                <h1 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--text);">Equipamentos</h1>
+                <p style="color: var(--text-muted);">Toque em qualquer item para ver a foto</p>
+            </div>
 
-            <div class="equipamentos-grid">
+            <div class="equip-grid">
                 <div class="equip-card" onclick="abrirModal('01-cabos-p10.jpg', 'Cabos P10')">
                     <img src="01-cabos-p10.jpg" alt="Cabos P10" class="equip-img">
                     <div class="equip-info">
-                        <h3>Cabos P10</h3>
-                        <p>2 unidades</p>
+                        <div class="equip-name">Cabos P10</div>
+                        <div class="equip-qty">2 unidades</div>
                     </div>
                 </div>
 
-                <div class="equip-card" onclick="abrirModal('02-cabos-xlr-grandes-coloridos.jpg', 'Cabos XLR Grandes Coloridos')">
-                    <img src="02-cabos-xlr-grandes-coloridos.jpg" alt="Cabos XLR Grandes Coloridos" class="equip-img">
+                <div class="equip-card" onclick="abrirModal('02-cabos-xlr-grandes-coloridos.jpg', 'Cabos XLR Grandes')">
+                    <img src="02-cabos-xlr-grandes-coloridos.jpg" alt="Cabos XLR Grandes" class="equip-img">
                     <div class="equip-info">
-                        <h3>Cabos XLR Grandes Coloridos</h3>
-                        <p>5 unidades</p>
+                        <div class="equip-name">Cabos XLR Grandes</div>
+                        <div class="equip-qty">5 unidades</div>
                     </div>
                 </div>
 
-                <div class="equip-card" onclick="abrirModal('03-cabos-xlr-pequenos-coloridos.jpg', 'Cabos XLR Pequenos Coloridos')">
-                    <img src="03-cabos-xlr-pequenos-coloridos.jpg" alt="Cabos XLR Pequenos Coloridos" class="equip-img">
+                <div class="equip-card" onclick="abrirModal('03-cabos-xlr-pequenos-coloridos.jpg', 'Cabos XLR Pequenos')">
+                    <img src="03-cabos-xlr-pequenos-coloridos.jpg" alt="Cabos XLR Pequenos" class="equip-img">
                     <div class="equip-info">
-                        <h3>Cabos XLR Pequenos Coloridos</h3>
-                        <p>4 unidades</p>
+                        <div class="equip-name">Cabos XLR Pequenos</div>
+                        <div class="equip-qty">4 unidades</div>
                     </div>
                 </div>
 
                 <div class="equip-card" onclick="abrirModal('04-cabos-xlr-sem-cor.jpg', 'Cabos XLR Sem Cor')">
                     <img src="04-cabos-xlr-sem-cor.jpg" alt="Cabos XLR Sem Cor" class="equip-img">
                     <div class="equip-info">
-                        <h3>Cabos XLR Sem Cor</h3>
-                        <p>3 unidades</p>
+                        <div class="equip-name">Cabos XLR Sem Cor</div>
+                        <div class="equip-qty">3 unidades</div>
                     </div>
                 </div>
 
                 <div class="equip-card" onclick="abrirModal('05-cabo-p10-p2.jpg', 'Cabo P10-P2')">
                     <img src="05-cabo-p10-p2.jpg" alt="Cabo P10-P2" class="equip-img">
                     <div class="equip-info">
-                        <h3>Cabo P10-P2</h3>
-                        <p>1 unidade</p>
+                        <div class="equip-name">Cabo P10-P2</div>
+                        <div class="equip-qty">1 unidade</div>
                     </div>
                 </div>
 
-                <div class="equip-card" onclick="abrirModal('06-mochila-microfones.jpg', 'Mochila dos Microfones')">
-                    <img src="06-mochila-microfones.jpg" alt="Mochila dos Microfones" class="equip-img">
+                <div class="equip-card" onclick="abrirModal('06-mochila-microfones.jpg', 'Mochila Mics')">
+                    <img src="06-mochila-microfones.jpg" alt="Mochila Mics" class="equip-img">
                     <div class="equip-info">
-                        <h3>Mochila dos Microfones</h3>
-                        <p>Transporte</p>
+                        <div class="equip-name">Mochila Mics</div>
+                        <div class="equip-qty">Transporte</div>
                     </div>
                 </div>
 
-                <div class="equip-card" onclick="abrirModal('07-microfones-shure.jpg', 'Microfones Shure')">
-                    <img src="07-microfones-shure.jpg" alt="Microfones Shure" class="equip-img">
+                <div class="equip-card" onclick="abrirModal('07-microfones-shure.jpg', 'Microfones')">
+                    <img src="07-microfones-shure.jpg" alt="Microfones" class="equip-img">
                     <div class="equip-info">
-                        <h3>Microfones Shure</h3>
-                        <p>5 unidades</p>
+                        <div class="equip-name">Microfones</div>
+                        <div class="equip-qty">5 unidades</div>
                     </div>
                 </div>
 
-                <div class="equip-card" onclick="abrirModal('08-seguradores-microfone.jpg', 'Seguradores de Microfone')">
-                    <img src="08-seguradores-microfone.jpg" alt="Seguradores de Microfone" class="equip-img">
+                <div class="equip-card" onclick="abrirModal('08-seguradores-microfone.jpg', 'Seguradores')">
+                    <img src="08-seguradores-microfone.jpg" alt="Seguradores" class="equip-img">
                     <div class="equip-info">
-                        <h3>Seguradores de Microfone</h3>
-                        <p>3 unidades</p>
+                        <div class="equip-name">Seguradores</div>
+                        <div class="equip-qty">3 unidades</div>
                     </div>
                 </div>
 
-                <div class="equip-card" onclick="abrirModal('09-direct-box-links.jpg', 'Direct Box - Lado LINK')">
-                    <img src="09-direct-box-links.jpg" alt="Direct Box - Lado LINK" class="equip-img">
+                <div class="equip-card" onclick="abrirModal('09-direct-box-links.jpg', 'Direct Box Links')">
+                    <img src="09-direct-box-links.jpg" alt="Direct Box Links" class="equip-img">
                     <div class="equip-info">
-                        <h3>Direct Box</h3>
-                        <p>Lado com LINK</p>
+                        <div class="equip-name">Direct Box</div>
+                        <div class="equip-qty">Lado LINK</div>
                     </div>
                 </div>
 
-                <div class="equip-card" onclick="abrirModal('10-direct-box-entrada-xlr.jpg', 'Direct Box - Entrada XLR')">
-                    <img src="10-direct-box-entrada-xlr.jpg" alt="Direct Box - Entrada XLR" class="equip-img">
+                <div class="equip-card" onclick="abrirModal('10-direct-box-entrada-xlr.jpg', 'Direct Box XLR')">
+                    <img src="10-direct-box-entrada-xlr.jpg" alt="Direct Box XLR" class="equip-img">
                     <div class="equip-info">
-                        <h3>Direct Box</h3>
-                        <p>Entrada XLR</p>
+                        <div class="equip-name">Direct Box</div>
+                        <div class="equip-qty">Entrada XLR</div>
                     </div>
                 </div>
 
-                <div class="equip-card" onclick="abrirModal('11-caixa-som-traseira.jpg', 'Caixa de Som - Traseira')">
-                    <img src="11-caixa-som-traseira.jpg" alt="Caixa de Som - Traseira" class="equip-img">
+                <div class="equip-card" onclick="abrirModal('11-caixa-som-traseira.jpg', 'Caixa de Som')">
+                    <img src="11-caixa-som-traseira.jpg" alt="Caixa de Som" class="equip-img">
                     <div class="equip-info">
-                        <h3>Caixa de Som</h3>
-                        <p>2 unidades</p>
+                        <div class="equip-name">Caixa de Som</div>
+                        <div class="equip-qty">2 unidades</div>
                     </div>
                 </div>
 
-                <div class="equip-card" onclick="abrirModal('12-mochila-caixa-som.jpg', 'Mochila da Caixa de Som')">
-                    <img src="12-mochila-caixa-som.jpg" alt="Mochila da Caixa de Som" class="equip-img">
+                <div class="equip-card" onclick="abrirModal('12-mochila-caixa-som.jpg', 'Mochila Caixa')">
+                    <img src="12-mochila-caixa-som.jpg" alt="Mochila Caixa" class="equip-img">
                     <div class="equip-info">
-                        <h3>Mochila da Caixa de Som</h3>
-                        <p>Transporte</p>
+                        <div class="equip-name">Mochila Caixa</div>
+                        <div class="equip-qty">Transporte</div>
                     </div>
                 </div>
 
-                <div class="equip-card" onclick="abrirModal('13-mixer-alto.jpg', 'Mixer ALTO')">
-                    <img src="13-mixer-alto.jpg" alt="Mixer ALTO" class="equip-img">
+                <div class="equip-card" onclick="abrirModal('13-mixer-alto.jpg', 'Mixer')">
+                    <img src="13-mixer-alto.jpg" alt="Mixer" class="equip-img">
                     <div class="equip-info">
-                        <h3>Mixer ALTO</h3>
-                        <p>1 unidade</p>
+                        <div class="equip-name">Mixer</div>
+                        <div class="equip-qty">1 unidade</div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- SLIDE 2: PASSO 1 -->
-        <div id="slide2" class="content">
+        <section class="slide" id="slide-1">
             <div class="passo">
-                <h3>PASSO 1: Caixas de Som</h3>
-                
+                <h3>📦 Caixas de Som</h3>
                 <div class="passo-texto">
-                    <p>Coloque as 2 caixas de som nos 2 corners da sala (uma em cada canto)</p>
-                    <p>Conecte o cabo de força em cada caixa</p>
-                    <p>Os cabos devem ser encontrados na mochila na Caixa de Som</p>
-                    <p>Conecte o <span class="equip-link" onclick="abrirModal('04-cabos-xlr-sem-cor.jpg', 'Cabos XLR Sem Cor')">cabo XLR SEM COR</span> no CH-1 de cada caixa</p>
-                    <p>Deixo o ganho entre 60-70% e ligo o Power on/off</p>
+                    <p>Coloque as 2 caixas nos corners da sala</p>
+                    <p>Conecte o cabo de força em cada uma</p>
+                    <p>Conecte o <span class="equip-link" onclick="abrirModal('04-cabos-xlr-sem-cor.jpg', 'Cabos XLR Sem Cor')">cabo XLR SEM COR</span> no CH-1</p>
+                    <p>Ajuste ganho 60-70% e ligue</p>
                 </div>
-
-                <div style="background: #f0f8ff; padding: 15px; border-radius: 4px; margin-top: 15px; border-left: 4px solid #4f81bd;">
-                    <h4 style="color: #1f4e79; margin-bottom: 10px;">Equipamentos necessários:</h4>
-                    <p style="color: #555; font-size: 14px;">• 2x <span class="equip-link" onclick="abrirModal('11-caixa-som-traseira.jpg', 'Caixa de Som')">Caixas de Som</span></p>
-                    <p style="color: #555; font-size: 14px;">• 3x <span class="equip-link" onclick="abrirModal('04-cabos-xlr-sem-cor.jpg', 'Cabos XLR Sem Cor')">Cabos XLR SEM COR</span></p>
+                <div class="box-info">
+                    <h4>Equipamentos:</h4>
+                    <p>• 2x <span class="equip-link" onclick="abrirModal('11-caixa-som-traseira.jpg', 'Caixas')">Caixas</span></p>
+                    <p>• 3x <span class="equip-link" onclick="abrirModal('04-cabos-xlr-sem-cor.jpg', 'Cabos XLR')">Cabos XLR Sem Cor</span></p>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- SLIDE 3: PASSO 2 -->
-        <div id="slide3" class="content">
+        <section class="slide" id="slide-2">
             <div class="passo">
-                <h3>PASSO 2: Conectar Microfones</h3>
-                
+                <h3>🎤 Microfones</h3>
                 <div class="passo-texto">
-                    <p>Pegue os 5 <span class="equip-link" onclick="abrirModal('02-cabos-xlr-grandes-coloridos.jpg', 'Cabos XLR Grandes Coloridos')">cabos XLR coloridos GRANDES</span></p>
-                    <p>Conecte cada um nos CANAIS 1-5 do <span class="equip-link" onclick="abrirModal('13-mixer-alto.jpg', 'Mixer')">mixer</span></p>
-                    <p>Conecte cada cabo no seu <span class="equip-link" onclick="abrirModal('07-microfones-shure.jpg', 'Microfones Shure')">microfone</span> correspondente</p>
-                    <p>ORGANIZE os cabos: passe ao lado da parede OU junte com fita adesiva</p>
+                    <p>Pegue 5 <span class="equip-link" onclick="abrirModal('02-cabos-xlr-grandes-coloridos.jpg', 'Cabos Grandes')">cabos XLR grandes</span></p>
+                    <p>Conecte nos CANAIS 1-5 do mixer</p>
+                    <p>Prenda cada cabo no <span class="equip-link" onclick="abrirModal('07-microfones-shure.jpg', 'Microfones')">microfone</span></p>
+                    <p>Organize os cabos com fita</p>
                 </div>
-
-                <div style="background: #f0f8ff; padding: 15px; border-radius: 4px; margin-top: 15px; border-left: 4px solid #4f81bd;">
-                    <h4 style="color: #1f4e79; margin-bottom: 10px;">Equipamentos necessários:</h4>
-                    <p style="color: #555; font-size: 14px;">• 5x <span class="equip-link" onclick="abrirModal('07-microfones-shure.jpg', 'Microfones Shure')">Microfones</span></p>
-                    <p style="color: #555; font-size: 14px;">• 5x <span class="equip-link" onclick="abrirModal('02-cabos-xlr-grandes-coloridos.jpg', 'Cabos XLR Grandes Coloridos')">Cabos XLR colorido grande</span></p>
+                <div class="box-info">
+                    <h4>Equipamentos:</h4>
+                    <p>• 5x <span class="equip-link" onclick="abrirModal('07-microfones-shure.jpg', 'Microfones')">Microfones</span></p>
+                    <p>• 5x <span class="equip-link" onclick="abrirModal('02-cabos-xlr-grandes-coloridos.jpg', 'Cabos')">Cabos XLR Grandes</span></p>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- SLIDE 4: PASSO 3 -->
-        <div id="slide4" class="content">
+        <section class="slide" id="slide-3">
             <div class="passo">
-                <h3>PASSO 3: Direct Box - 4 Instrumentos (Parte 1)</h3>
-                
+                <h3>📟 Direct Box - Parte 1</h3>
                 <div class="passo-texto">
-                    <p>Pegue os 4 <span class="equip-link" onclick="abrirModal('03-cabos-xlr-pequenos-coloridos.jpg', 'Cabos XLR Pequenos Coloridos')">cabos XLR PEQUENOS</span> (já presos com fita)</p>
-                    <p>Conecte cada um nos CANAIS 8-12 do <span class="equip-link" onclick="abrirModal('13-mixer-alto.jpg', 'Mixer')">mixer</span> (4 canais)</p>
-                    <p>Conecte o outro lado no <span class="equip-link" onclick="abrirModal('10-direct-box-entrada-xlr.jpg', 'Direct Box')">Direct Box</span> (lado com interruptor on/off)</p>
-                    <p><strong>IMPORTANTE - MANTENHA A SEQUÊNCIA DE CORES</strong></p>
+                    <p>Pegue 4 <span class="equip-link" onclick="abrirModal('03-cabos-xlr-pequenos-coloridos.jpg', 'Cabos Pequenos')">cabos XLR pequenos</span></p>
+                    <p>Conecte nos CANAIS 8-12 do mixer</p>
+                    <p>Prenda no <span class="equip-link" onclick="abrirModal('10-direct-box-entrada-xlr.jpg', 'Direct Box')">Direct Box</span></p>
+                    <p><strong>⚠️ Mantenha a sequência de cores!</strong></p>
                 </div>
-
-                <div style="background: #f0f8ff; padding: 15px; border-radius: 4px; margin-top: 15px; border-left: 4px solid #4f81bd;">
-                    <h4 style="color: #1f4e79; margin-bottom: 10px;">Equipamentos necessários:</h4>
-                    <p style="color: #555; font-size: 14px;">• 1x <span class="equip-link" onclick="abrirModal('10-direct-box-entrada-xlr.jpg', 'Direct Box')">Direct Box</span></p>
-                    <p style="color: #555; font-size: 14px;">• 4x <span class="equip-link" onclick="abrirModal('03-cabos-xlr-pequenos-coloridos.jpg', 'Cabos XLR Pequenos Coloridos')">Cabos XLR coloridos pequenos</span></p>
+                <div class="box-info">
+                    <h4>Equipamentos:</h4>
+                    <p>• 1x <span class="equip-link" onclick="abrirModal('10-direct-box-entrada-xlr.jpg', 'Direct Box')">Direct Box</span></p>
+                    <p>• 4x <span class="equip-link" onclick="abrirModal('03-cabos-xlr-pequenos-coloridos.jpg', 'Cabos')">Cabos XLR Pequenos</span></p>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- SLIDE 5: PASSO 4 -->
-        <div id="slide5" class="content">
+        <section class="slide" id="slide-4">
             <div class="passo">
-                <h3>PASSO 4: Direct Box - 4 Instrumentos (Parte 2)</h3>
-                
+                <h3>🔌 Direct Box - Parte 2</h3>
                 <div class="passo-texto">
-                    <p>Conecte os 4 <span class="equip-link" onclick="abrirModal('01-cabos-p10.jpg', 'Cabos P10')">cabos P10 (banana)</span> cada um no lado "LINK" do <span class="equip-link" onclick="abrirModal('09-direct-box-links.jpg', 'Direct Box')">Direct Box</span> (posições 1-4)</p>
-                    <p>Conecte cada cabo no seu instrumento correspondente</p>
-                    <p><strong>IMPORTANTE - MANTENHA A SEQUÊNCIA DE CORES</strong></p>
+                    <p>Pegue 2 <span class="equip-link" onclick="abrirModal('01-cabos-p10.jpg', 'Cabos P10')">cabos P10</span></p>
+                    <p>Conecte no lado "LINK" do <span class="equip-link" onclick="abrirModal('09-direct-box-links.jpg', 'Direct Box')">Direct Box</span></p>
+                    <p>Prenda nos instrumentos</p>
+                    <p><strong>⚠️ Mantenha a sequência de cores!</strong></p>
                 </div>
-
-                <div style="background: #f0f8ff; padding: 15px; border-radius: 4px; margin-top: 15px; border-left: 4px solid #4f81bd;">
-                    <h4 style="color: #1f4e79; margin-bottom: 10px;">Equipamentos necessários:</h4>
-                    <p style="color: #555; font-size: 14px;">• 2x <span class="equip-link" onclick="abrirModal('01-cabos-p10.jpg', 'Cabos P10')">Cabos P10</span></p>
-                    <p style="color: #555; font-size: 14px;">• 4x Instrumentos (baixo, bateria eletrônica, teclado, etc)</p>
+                <div class="box-info">
+                    <h4>Equipamentos:</h4>
+                    <p>• 2x <span class="equip-link" onclick="abrirModal('01-cabos-p10.jpg', 'Cabos P10')">Cabos P10</span></p>
+                    <p>• 4x Instrumentos</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- SLIDE 6: CONCLUSÃO -->
-        <div id="slide6" class="content">
-            <div class="success-message">
-                <h3>✅ MONTAGEM CONCLUÍDA!</h3>
-                <p style="margin-top: 10px;">Agora é só ligar os equipamentos e ajustar os canais!</p>
+        <!-- SLIDE 6: FIM -->
+        <section class="slide" id="slide-5">
+            <div class="success">
+                <h3>✅ Pronto!</h3>
+                <p>Ligou tudo? Agora é só ajustar os canais! 🎵</p>
             </div>
-        </div>
+        </section>
+    </main>
 
-        <footer>
-            <p>Ministério de Mídia © 2026 | Guia Interativo de Montagem</p>
-        </footer>
-    </div>
+    <!-- FOOTER -->
+    <footer>
+        <p>Ministério de Mídia © 2026</p>
+    </footer>
 
-    <!-- MODAL POPUP -->
-    <div id="equipModal" class="modal">
+    <!-- MODAL -->
+    <div class="modal" id="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle">Equipamento</h2>
-                <button class="close-btn" onclick="fecharModal()">&times;</button>
+                <h2 id="modal-title">Equipamento</h2>
+                <button class="close-btn" onclick="fecharModal()">✕</button>
             </div>
-            <img id="modalImg" src="" alt="" class="modal-img">
+            <img id="modal-img" src="" alt="" class="modal-img">
         </div>
     </div>
 
     <script>
-        function abrirAba(abaId) {
-            document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-            document.getElementById(abaId).classList.add('active');
-            event.target.classList.add('active');
+        function mudarSlide(index) {
+            document.getElementById('modal').classList.remove('active');
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`slide-${index}`).classList.add('active');
+            document.querySelectorAll('.tab-btn')[index].classList.add('active');
+            window.scrollTo(0, 0);
         }
 
-        function abrirModal(imagem, titulo) {
-            const modal = document.getElementById('equipModal');
-            document.getElementById('modalTitle').textContent = titulo;
-            document.getElementById('modalImg').src = imagem;
-            modal.classList.add('show');
+        function abrirModal(img, titulo) {
+            document.getElementById('modal-title').textContent = titulo;
+            document.getElementById('modal-img').src = img;
+            document.getElementById('modal').classList.add('active');
         }
 
         function fecharModal() {
-            document.getElementById('equipModal').classList.remove('show');
+            document.getElementById('modal').classList.remove('active');
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('equipModal');
-            if (event.target == modal) {
-                modal.classList.remove('show');
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') {
+                fecharModal();
             }
-        }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                fecharModal();
+            }
+        });
     </script>
 </body>
 </html>
